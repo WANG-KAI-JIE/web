@@ -2,7 +2,7 @@
   <a-layout-header class="header">
     <div class="logo">
       您好：{{ member.mobile }}
-      <router-link to="/login">退出登录</router-link>
+      <router-link to="/login" style="color: white">退出登录</router-link>
     </div>
     <a-menu
       v-model:selectedKeys="selectedKeys1"
@@ -27,7 +27,4 @@ const selectedKeys1 = ref(["2"]);
 </script>
 
 <style scoped>
-.logo {
-  color: #fff;
-}
 </style>
