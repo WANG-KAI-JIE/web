@@ -1,6 +1,6 @@
 <template>
   <a-button type="primary" @click="showModal">新增</a-button>
-  <a-table :dataSource="dataSource" :columns="columns" />
+  <a-table :dataSource="passengers" :columns="columns" />
   <a-modal
     v-model:visible="visible"
     title="乘车人"
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { notification } from "ant-design-vue";
 import axios from "axios";
 
@@ -45,6 +45,49 @@ const passenger = reactive({
   type: undefined,
   createTime: undefined,
   updateTime: undefined,
+});
+
+const passengers = ref([]);
+const columns = [
+  {
+    title: "姓名",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "身份证",
+    dataIndex: "idCard",
+    key: "idCard",
+  },
+  {
+    title: "类型",
+    dataIndex: "type",
+    key: "type",
+  },
+];
+
+const handleQuery = (param) => {
+  axios
+    .get("/member/passenger/query-list", {
+      params: {
+        page: param.page,
+        size: param.size,
+      },
+    })
+    .then((response) => {
+      let data = response.data;
+      if (data.success) {
+        passengers.value = data.content.list;
+      } else {
+        notification.error({ description: data.message });
+      }
+    });
+};
+onMounted(() => {
+  handleQuery({
+    page: 1,
+    size: 2,
+  });
 });
 
 const showModal = () => {
@@ -62,39 +105,6 @@ const handleOk = () => {
     }
   });
 };
-
-const dataSource = [
-  {
-    key: "1",
-    name: "胡彦斌",
-    age: 32,
-    address: "西湖区湖底公园1号",
-  },
-  {
-    key: "2",
-    name: "胡彦祖",
-    age: 42,
-    address: "西湖区湖底公园1号",
-  },
-];
-
-const columns = [
-  {
-    title: "姓名",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "年龄",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "住址",
-    dataIndex: "address",
-    key: "address",
-  },
-];
 </script>
 
 <style scoped></style>
