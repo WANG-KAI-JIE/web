@@ -1,6 +1,10 @@
 <template>
   <a-button type="primary" @click="showModal">新增</a-button>
-  <a-table :dataSource="passengers" :columns="columns" />
+  <a-table
+    :dataSource="passengers"
+    :columns="columns"
+    :pagination="pagination"
+  />
   <a-modal
     v-model:visible="visible"
     title="乘车人"
@@ -47,7 +51,31 @@ const passenger = reactive({
   updateTime: undefined,
 });
 
+const showModal = () => {
+  visible.value = true;
+};
+
+const handleOk = () => {
+  axios.post("/member/passenger/save", passenger).then((response) => {
+    let data = response.data;
+    if (data.success) {
+      notification.success({ description: "保存成功！" });
+      visible.value = false;
+    } else {
+      notification.error({ description: data.message });
+    }
+  });
+};
+
 const passengers = ref([]);
+
+// 分页的三个属性名是固定的
+const pagination = reactive({
+  total: 0,
+  current: 1,
+  pageSize: 3,
+});
+
 const columns = [
   {
     title: "姓名",
@@ -78,6 +106,9 @@ const handleQuery = (param) => {
       let data = response.data;
       if (data.success) {
         passengers.value = data.content.list;
+        // 设置分页空间的值
+        pagination.current = param.page;
+        pagination.total = data.content.total;
       } else {
         notification.error({ description: data.message });
       }
@@ -86,25 +117,9 @@ const handleQuery = (param) => {
 onMounted(() => {
   handleQuery({
     page: 1,
-    size: 2,
+    size: pagination.pageSize,
   });
 });
-
-const showModal = () => {
-  visible.value = true;
-};
-
-const handleOk = () => {
-  axios.post("/member/passenger/save", passenger).then((response) => {
-    let data = response.data;
-    if (data.success) {
-      notification.success({ description: "保存成功！" });
-      visible.value = false;
-    } else {
-      notification.error({ description: data.message });
-    }
-  });
-};
 </script>
 
 <style scoped></style>
