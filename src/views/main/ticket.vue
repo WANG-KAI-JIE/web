@@ -95,7 +95,7 @@ import router from "@/router";
 
 const toOrder = (record) => {
   dailyTrainTicket.value = Tool.copy(record);
-  SessionStorage.set("dailyTrainTicket", dailyTrainTicket.value);
+  SessionStorage.set(SESSION_ORDER, dailyTrainTicket.value);
   router.push("/order");
 }
 

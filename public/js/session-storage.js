@@ -1,4 +1,7 @@
-// eslint-disable-next-line no-undef
+// 所有的 session key 都在这里统一定义，可以避免多个功能使用同一个 key
+SESSION_ORDER = "SESSION_ORDER";
+SESSION_TICKET_PARAMS = "SESSION_TICKET_PARAMS";
+
 SessionStorage = {
     get: function (key) {
         var v = sessionStorage.getItem(key);
