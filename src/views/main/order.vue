@@ -1,0 +1,8 @@
+<template>
+  <div>{{ dailyTrainTicket }}</div>
+</template>
+
+<script setup>
+const dailyTrainTicket = SessionStorage.get('dailyTrainTicket') || {};
+console.log("下单的车次信息", dailyTrainTicket);
+</script>
