@@ -298,7 +298,7 @@ const finishCheckPassenger = () => {
   let seatTypesTemp = Tool.copy(seatTypes);
   for (let i = 0; i < tickets.value.length; i++) {
     let ticket = tickets.value[i];
-    for (let j = 0; j < tickets.value.length; j++) {
+    for (let j = 0; j < seatTypesTemp.length; j++) {
       let seatType = seatTypesTemp[j];
       // 同类型座位余票-1，这里扣减的是临时copy出来的库存，不是真正的库存，只是为了校验
       if (ticket.seatTypeCode === seatType.code) {
