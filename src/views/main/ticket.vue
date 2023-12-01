@@ -31,7 +31,7 @@
   >
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'operation'">
-        <a-button type="primary" @click="toOrder(record)">预定</a-button>
+        <a-button type="primary" @click="toOrder(record)" :disabled="isExpire(record)">{{isExpire(record) ? "过期" : "预定"}}</a-button>
         <router-link :to="{
             path: '/seat',
             query: {
