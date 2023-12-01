@@ -6,6 +6,7 @@
         v-model:value="params.date"
         valueFormat="YYYY-MM-DD"
         placeholder="请选择日期"
+        :disabled-date="disabledDate"
       />
       <station-select-view
         v-model:value="params.start"
@@ -222,6 +223,11 @@ const columns = [
     dataIndex: "operation",
   },
 ];
+
+// 不能选择今天以前及两周以后的日期
+const disabledDate = current => {
+  return current && (current <= dayjs().add(-1, 'day') || current > dayjs().add(14, 'day'));
+};
 
 const onAdd = () => {
   dailyTrainTicket.value = {};
